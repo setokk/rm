@@ -118,7 +118,7 @@ fn main() {
                         .expect("Can't delete file. Check permissions");
                 }
             } else if metadata.is_dir() {
-                if force && recursive {
+                if force && recursive && !prompt {
                     fs::remove_dir_all(path)
                         .expect("Can't remove dir/subdirs/subfiles. Check permissions");
                     exit(0);
@@ -127,9 +127,10 @@ fn main() {
                 if force {
                     eprintln!("Error in input. Expected file but got dir.\
                     Exiting...");
+                    exit(1);
                 }
 
-                // only: recursive = true
+                // only: recursive = true and prompt = true
                 recursive_path_delete(path, &mut choice);
             }
         }
